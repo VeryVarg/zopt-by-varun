@@ -1,16 +1,8 @@
 streamlit
 pydantic
 
-# LangChain Core
 langchain
 langchain-core
 
-# Anthropic Integration
-langchain-anthropic
-
-# Google Gemini (PaLM) Integration
 langchain-google-genai
-google-generativeai
-
-# Environment Variable Management
-python-dotenv
+typing
