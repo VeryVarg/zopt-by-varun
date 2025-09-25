@@ -1,0 +1,9 @@
+{
+"time": "20:30", 
+"day": "Tuesday", 
+"weather": "Rainy", 
+"temperature": "22\u00b0C", 
+"location_type": "residential", 
+"delivery_radius": "5km", 
+"available_restaurants": ["Punjabi Dhaba", "South Indian Corner", "Cafe Coffee Day"]
+}

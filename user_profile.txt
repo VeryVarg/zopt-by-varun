@@ -1,0 +1,12 @@
+{
+"age": 23, 
+"gender": "female", 
+"location": "Bangalore", 
+"budget_range": "150-400", 
+"dietary_restrictions": ["vegetarian"], 
+"preferred_cuisines": ["North Indian", "South Indian", "Continental"], 
+"order_history": ["Dal Makhani", "Paneer Butter Masala", "Chocolate Brownie", "Masala Dosa", "Filter Coffee"], 
+"frequent_orders": ["Dal Makhani", "Filter Coffee"], 
+"recent_preferences": ["Paneer Butter Masala", "Chocolate Brownie"], 
+"avoided_items": ["Spicy food", "Heavy meat dishes"]
+}
