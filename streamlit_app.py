@@ -15,7 +15,7 @@ prompt = load_prompt('template.json')
 user_profile_content = open("user_profile.txt").read()
 contextual_data_content = open("contextual_data.txt").read()
 
-llm = ChatGoogleGenerativeAI(model="gemini-2.5-pro",temperature=0.3,google_api_key= st.secrets["GOOGLE_API_KEY"])
+llm = ChatGoogleGenerativeAI(model="gemini-3-pro-preview",temperature=0.3,google_api_key= st.secrets["GOOGLE_API_KEY"])
 
 # Define the Pydantic model for structured output
 class FoodRecommendation(BaseModel):
