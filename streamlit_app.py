@@ -19,46 +19,46 @@ st.set_page_config(layout="wide")
 
 def get_dynamic_contextual_data():
     """Fetches real-time weather and combines with fixed delivery constants."""
-    try:
-        # Setup the Open-Meteo API client with cache and retry on error
-        cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
-        retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
-        openmeteo = openmeteo_requests.Client(session=retry_session)
+    
+    # Setup the Open-Meteo API client with cache and retry on error
+    cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
+    retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
+    openmeteo = openmeteo_requests.Client(session=retry_session)
 
-        url = "https://api.open-meteo.com/v1/forecast"
-        params = {
-            "latitude": 12.9719,
-            "longitude": 77.5937,
-            "current": ["temperature_2m", "relative_humidity_2m", "is_day", "wind_speed_10m", "precipitation", "rain", "showers"],
-            "timezone": "auto",
-            "forecast_days": 1,
-        }
-        responses = openmeteo.weather_api(url, params=params)
-        response = responses[0]
-        current = response.Current()
-        
-        now = datetime.now()
-        
-        rain_val = current.Variables(5).Value()
-        precipitation_val = current.Variables(4).Value()
-        is_day = current.Variables(2).Value()
-        weather = "Rainy" if (rain_val > 0 or precipitation_val > 0) else ("Sunny" if is_day else "Clear Night")
+    url = "https://api.open-meteo.com/v1/forecast"
+    params = {
+        "latitude": 12.9719,
+        "longitude": 77.5937,
+        "current": ["temperature_2m", "relative_humidity_2m", "is_day", "wind_speed_10m", "precipitation", "rain", "showers"],
+        "timezone": "auto",
+        "forecast_days": 1,
+    }
+    responses = openmeteo.weather_api(url, params=params)
+    response = responses[0]
+    current = response.Current()
+    
+    now = datetime.now()
+    
+    rain_val = current.Variables(5).Value()
+    precipitation_val = current.Variables(4).Value()
+    is_day = current.Variables(2).Value()
+    weather = "Rainy" if (rain_val > 0 or precipitation_val > 0) else ("Sunny" if is_day else "Clear Night")
 
-        return json.dumps({
-            "time": now.strftime("%H:%M"),
-            "day": now.strftime("%A"),
-            "weather": weather,
-            "temperature_2m": f"{round(current.Variables(0).Value(), 1)}°C",
-            "relative_humidity_2m": f"{round(current.Variables(1).Value(), 1)}%",
-            "is_day": int(is_day),
-            "wind_speed_10m": f"{round(current.Variables(3).Value(), 1)} km/h",
-            "precipitation": f"{round(precipitation_val, 1)} mm",
-            "rain": f"{round(rain_val, 1)} mm",
-            "showers": f"{round(current.Variables(6).Value(), 1)} mm",
-            "location_type": "residential",
-            "delivery_radius": "5km",
-            "available_restaurants": ["Punjabi Dhaba", "South Indian Corner", "Cafe Coffee Day"]
-        }, indent=4)
+    return json.dumps({
+        "time": now.strftime("%H:%M"),
+        "day": now.strftime("%A"),
+        "weather": weather,
+        "temperature_2m": f"{round(current.Variables(0).Value(), 1)}°C",
+        "relative_humidity_2m": f"{round(current.Variables(1).Value(), 1)}%",
+        "is_day": int(is_day),
+        "wind_speed_10m": f"{round(current.Variables(3).Value(), 1)} km/h",
+        "precipitation": f"{round(precipitation_val, 1)} mm",
+        "rain": f"{round(rain_val, 1)} mm",
+        "showers": f"{round(current.Variables(6).Value(), 1)} mm",
+        "location_type": "residential",
+        "delivery_radius": "5km",
+        "available_restaurants": ["Punjabi Dhaba", "South Indian Corner", "Cafe Coffee Day"]
+    }, indent=4)
 
 prompt = load_prompt('template.json')
 user_profile_content = open("user_profile.txt").read()
