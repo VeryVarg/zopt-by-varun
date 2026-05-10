@@ -78,8 +78,40 @@ class FoodRecommendationResponse(BaseModel):
 
 parser = PydanticOutputParser(pydantic_object=FoodRecommendationResponse)
 
+# Custom CSS for the button and spacing
+st.markdown("""
+    <style>
+    div.stButton > button[kind="primary"] {
+        background-color: #E23744;
+        color: white;
+        height: 60px;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 8px;
+        border: none;
+        margin-top: 10px;
+    }
+    div.stButton > button[kind="primary"]:hover {
+        background-color: #C02D3A;
+        color: white;
+        border: none;
+    }
+    .main .block-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        gap: 24px;
+    }
+    h1 {
+        margin-bottom: 24px;
+    }
+    textarea {
+        margin-bottom: 16px;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-st.title("ZoPT AI")
+
+st.title("ZoPT: Mood based food ordering using GenAI")
 st.caption("How are you feeling? What would you like to eat?")
 
 # Added placeholder so it looks cleaner when empty
@@ -103,7 +135,7 @@ def get_emoji(cuisine: str, item_name: str) -> str:
     if 'north indian' in cuisine_l: return "🥘"
     return "🍽️"
 
-if st.button("🍽  Get Recommendations", use_container_width=True):
+if st.button("Get Recommendations", type="primary", use_container_width=True):
     if not user_input.strip():
         st.warning("Please tell us how you're feeling first!")
     else:
@@ -132,24 +164,20 @@ if st.button("🍽  Get Recommendations", use_container_width=True):
                             # Soft container for cards (using markdown/containers)
                             with st.container():
                                 st.markdown(f"## {get_emoji(item.cuisine_type, item.item)}")
-                                st.markdown(f"**{item.item}**")
-                                st.caption(item.cuisine_type)
-                                st.button(f"🛒 Order", key=f"z1_{i}_{item.item}", use_container_width=True)
+                                st.markdown(f"### {item.item}")
+                                st.button("Order", key=f"z1_{i}_{item.item}", use_container_width=True)
 
                 # ZONE 2: More Suggestions
                 if rest:
                     st.markdown("<br>", unsafe_allow_html=True)
-                    with st.expander("🍽️ View More Suggestions"):
+                    with st.expander("View More Suggestions"):
+                        cols2 = st.columns(3)
                         for i, item in enumerate(rest):
-                            row_cols = st.columns([5, 3, 2])
-                            with row_cols[0]:
-                                st.markdown(f"**{item.item}**")
-                            with row_cols[1]:
-                                st.caption(item.cuisine_type)
-                            with row_cols[2]:
-                                st.button("Order", key=f"z2_{i}_{item.item}", use_container_width=True)
-                            if i < len(rest) - 1:
-                                st.divider()
+                            with cols2[i % 3]:
+                                with st.container():
+                                    st.markdown(f"## {get_emoji(item.cuisine_type, item.item)}")
+                                    st.markdown(f"### {item.item}")
+                                    st.button("Order", key=f"z2_{i}_{item.item}", use_container_width=True)
 
                 # ZONE 3: Expansion/Why
                 st.markdown("<br>", unsafe_allow_html=True)
@@ -167,4 +195,4 @@ if st.button("🍽  Get Recommendations", use_container_width=True):
 
             except Exception as e:
                 st.error("Something went wrong. Please try again.")
-                st.button("🔄 Try Again", use_container_width=True)
+                st.button("Try Again", use_container_width=True)
