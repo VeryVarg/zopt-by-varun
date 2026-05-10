@@ -38,7 +38,7 @@ The system uses a sophisticated scoring logic to rank food options:
 ### The Inputs
 * **User Prompt**: The chat interface captures nuanced intent flawlessly.
 * **user_profile.txt**: Acts as the backend "database" storing dietary limitations, average order value, demographics, and frequent items.
-* **contextual_data.txt**: Simulates the real-time device signals (GPS, Clock, Weather API).
+* **contextual_data**: Uses Open-Metro Weather API to get day, weather, humidity, precipitation etc.
 
 ---
 
