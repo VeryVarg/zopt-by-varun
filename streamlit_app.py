@@ -54,7 +54,7 @@ def get_dynamic_contextual_data():
         "wind_speed_10m": f"{round(current.Variables(3).Value(), 1)} km/h",
         "precipitation": f"{round(precipitation_val, 1)} mm",
         "rain": f"{round(rain_val, 1)} mm",
-        "showers": f"{round(current.Variables(6).Value(), 1)} mm"]
+        "showers": f"{round(current.Variables(6).Value(), 1)} mm"
     }, indent=4)
 
 prompt = load_prompt('template.json')
