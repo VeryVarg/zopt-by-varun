@@ -1,103 +1,74 @@
-# 🍽️ Mood-Based Food Recommender Setup Guide
+# 🍽️ ZoPT: Zomato Personalized Ordering AI
 
-## Quick Start
+**🔗 Try the App:** [https://zopt-by-varungarg.streamlit.app/](https://zopt-by-varungarg.streamlit.app/)
 
-1. **Install Dependencies:**
+## 1. Executive Summary
+ZoPT is an AI-driven, conversational food ordering interface designed to solve the limitations of traditional graphical UIs (GUIs) in food delivery apps like Zomato. By leveraging natural language processing, ZoPT translates complex user intent, context, and historical behavior into precise, tailored food recommendations. 
+
+**Why ZoPT Wins Over Traditional GUIs (Zomato):**
+1. **Ambiguous, multi-constraint goal articulation**
+   * *"Order something light, under ₹200, no onion-garlic, delivers in under 25 mins, not Chinese"*
+   * Traditional filter systems require users to manually locate and apply multiple specific filters. ZoPT handles this natively as a single, conversational intent.
+2. **Edge cases and exceptions the UI didn’t anticipate**
+   * *"My last order from Paradise was wrong — reorder but replace the raita with extra naan and apply my remaining Zomato credits"*
+   * GUI flows break on highly specific compound operations. Chat handles the composition and overrides naturally.
+3. **"Change of plans" mid-flow situations**
+   * Research shows GUIs win on "happy-path" flows, but chat wins when users need to deviate — *"actually, make it for 3 people, split the order between two addresses, and schedule for 8pm"*. 
+
+---
+
+## 2. The Problem: User Pain Points
+Modern food delivery apps rely on categorical searching, hard-coded filters, and static carousels. This causes friction when:
+* **Decision Fatigue**: Users are overwhelmed by options and spend an excessive amount of time deciding what to eat.
+* **Rigid Flows**: Standard apps assume a linear ordering process. Deviating from the path (e.g., splitting orders, substituting items across past orders) requires frustrating workarounds.
+* **Context Blindness**: Standard algorithms rely primarily on past orders, often ignoring the user's immediate emotional state, weather, or real-time intent.
+
+---
+
+## 3. The Solution: Reasoning & Algorithm Inputs
+To provide magical, hyper-personalized recommendations, ZoPT dynamically weighs multiple data vectors to create a scored output.
+
+### Algorithm Design
+The system uses a sophisticated scoring logic to rank food options:
+* **Mood & Intent Analysis (40%)**: Translates free-form text into an emotional/activity state (e.g., stressed, tired, craving comfort).
+* **Historical Behavior (30%)**: Matches recommendations against past orders and established culinary preferences.
+* **Contextual Integration (20%)**: Pulls variables like time of day, weather conditions, and day of the week to suggest situationally appropriate food (e.g., warm soups during rain).
+* **Demographic Personalization (10%)**: Tunes recommendations strictly within budget, dietary constraints, and regional affinities.
+
+### The Inputs
+* **User Prompt**: The chat interface captures nuanced intent flawlessly.
+* **user_profile.txt**: Acts as the backend "database" storing dietary limitations, average order value, demographics, and frequent items.
+* **contextual_data.txt**: Simulates the real-time device signals (GPS, Clock, Weather API).
+
+---
+
+## 4. How to Run and Test (For QA / Local Dev)
+
+If you'd like to test the logic loops and algorithms locally:
+
+1. **Setup the Environment:**
+   Run the following to create your virtual environment and install dependencies:
    ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
    pip install -r requirements.txt
    ```
 
-2. **Get Google API Key:**
-   - Visit https://ai.google.dev/
-   - Sign in with your Google account
-   - Create a new API key for Gemini
-   - Keep your API key secure
-
-3. **Run the Application:**
-   ```bash
-   streamlit run mood_food_recommender.py
+2. **Configure the AI Provider:**
+   Create a `.env` file in the root directory and add your OpenAI API Key:
+   ```env
+   OPENAI_API_KEY=your_openai_api_key_here
    ```
 
-4. **Access the Web Interface:**
-   - Open your browser to `http://localhost:8501`
-   - Enter your Google API key in the sidebar
-   - Start getting personalized food recommendations!
+3. **Test the Variables:**
+   * Edit `user_profile.txt` to simulate different user personas (e.g., strict vegan vs. meat lover).
+   * Edit `contextual_data.txt` to simulate different environmental triggers (e.g., Rainy Friday Night vs. Hot Monday Morning).
 
-## File Structure
-
-```
-your-project/
-├── mood_food_recommender.py    # Main Streamlit application
-├── user_profile.txt            # User preferences and history
-├── contextual_data.txt         # Current context (time, weather, etc.)
-├── requirements.txt            # Python dependencies
-└── README.md                   # This file
-```
-
-## How It Works
-
-### Algorithm Overview
-The system uses a sophisticated 4-phase scoring algorithm:
-
-1. **Mood Analysis (40% weight)** - Analyzes your text input for emotional state
-2. **Historical Behavior (30% weight)** - Considers your past food preferences  
-3. **Contextual Integration (20% weight)** - Factors in time, weather, location
-4. **Demographic Personalization (10% weight)** - Adjusts for age, income, preferences
-
-### Input Requirements
-
-1. **User Input (GUI):** Your current mood/feelings as text
-2. **User Profile (File):** Your preferences, history, demographics
-3. **Contextual Data (File):** Current time, weather, location info
-
-### Technology Stack
-
-- **Frontend:** Streamlit (Web Interface)
-- **LLM:** Google Gemini 2.0 Flash
-- **Framework:** LangChain for LLM orchestration
-- **Data Validation:** Pydantic for structured outputs
-- **Language:** Python 3.8+
-
-## Customization
-
-### Modifying User Profile
-Edit `user_profile.txt` to include:
-- Your actual food preferences
-- Order history
-- Dietary restrictions
-- Budget preferences
-- Demographics
-
-### Updating Context Data
-Edit `contextual_data.txt` to reflect:
-- Current time and date
-- Local weather conditions
-- Your location
-- Current situation/stress levels
-
-### Algorithm Tweaks
-The algorithm weights can be adjusted in the prompt template within `mood_food_recommender.py`:
-- Mood Analysis: Currently 40%
-- Historical Behavior: Currently 30%  
-- Contextual Integration: Currently 20%
-- Demographics: Currently 10%
-
-## Troubleshooting
-
-### Common Issues:
-
-1. **API Key Error:**
-   - Ensure your Google API key is correct
-   - Check if you have Gemini API access enabled
-   - Verify billing is set up if required
-
-2. **File Not Found:**
-   - Ensure `user_profile.txt` and `contextual_data.txt` exist
-   - Check file permissions and encoding (UTF-8)
-
-3. **Import Errors:**
-   - Run `pip install -r requirements.txt`
-   - Check Python version (3.8+ required)
+4. **Run the Application:**
+   ```bash
+   streamlit run streamlit_app.py
+   ```
+   Open `http://localhost:8501`, input a conversational request (e.g., "I'm exhausted and it's pouring rain, get me something comforting"), and review the analytical breakdown of why specific foods were chosen.
    - Consider using a virtual environment
 
 4. **Rate Limiting:**

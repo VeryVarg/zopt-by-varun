@@ -1,9 +1,14 @@
+import os
+from dotenv import load_dotenv
 import streamlit as st
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate, load_prompt
 from langchain_core.output_parsers import StrOutputParser, PydanticOutputParser
 from typing import List, Optional
 from pydantic import BaseModel, Field
+
+# Load environment variables from .env file
+load_dotenv()
 
 st.set_page_config(layout="wide")
 
@@ -15,7 +20,7 @@ prompt = load_prompt('template.json')
 user_profile_content = open("user_profile.txt").read()
 contextual_data_content = open("contextual_data.txt").read()
 
-llm = ChatGoogleGenerativeAI(model="gemini-3-pro-preview",temperature=0.3,google_api_key= st.secrets["GOOGLE_API_KEY"])
+llm = ChatOpenAI(model="gpt-4o", temperature=0.3)
 
 # Define the Pydantic model for structured output
 class FoodRecommendation(BaseModel):
@@ -24,8 +29,8 @@ class FoodRecommendation(BaseModel):
     cuisine_type: str = Field(description="Type of cuisine")
 
 class FoodRecommendationResponse(BaseModel):
-    mood_classification: dict = Field(description="Detected emotional state and confidence level")
-    scoring_breakdown: dict = Field(description="Detailed explanation of how scores were calculated")
+    mood_classification: str = Field(description="Detected emotional state and confidence level")
+    scoring_breakdown: str = Field(description="Detailed explanation of how scores were calculated")
     top_recommendations: List[FoodRecommendation] = Field(description="List of top 10 food recommendations")
     recommendation_strategy: str = Field(description="Explanation of the ranking approach used")
     confidence_score: float = Field(description="Overall algorithm certainty between 0.0 and 1.0")
