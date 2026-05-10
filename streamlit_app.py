@@ -182,13 +182,11 @@ if st.button("Get Recommendations", type="primary", use_container_width=True):
                 # ZONE 3: Expansion/Why
                 st.markdown("<br>", unsafe_allow_html=True)
                 with st.expander("See why these match your mood"):
-                    st.markdown(f"🧠 **Mood Match**  \n<span style='color: gray; font-size: 0.9em;'>{result.mood_classification}</span>", unsafe_allow_html=True)
-                    st.markdown("<br>", unsafe_allow_html=True)
-                    
-                    st.markdown(f"💡 **Context Integration**  \n<span style='color: gray; font-size: 0.9em;'>{result.scoring_breakdown}</span>", unsafe_allow_html=True)
-                    st.markdown("<br>", unsafe_allow_html=True)
-                    
-                    st.markdown(f"🎯 **Strategy**  \n<span style='color: gray; font-size: 0.9em;'>{result.recommendation_strategy}</span>", unsafe_allow_html=True)
+                    st.markdown(f"**Mood Match:** {result.mood_classification}")
+                    st.markdown(" ")
+                    st.markdown(f"**Context Integration:** {result.scoring_breakdown}")
+                    st.markdown(" ")
+                    st.markdown(f"**Strategy:** {result.recommendation_strategy}")
                     
                     st.divider()
                     st.caption("✅ *Your budget and dietary rules were strictly enforced.*")
