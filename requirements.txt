@@ -6,3 +6,9 @@ langchain-core
 langchain-openai
 python-dotenv
 typing
+
+# Weather API 
+openmeteo-requests
+requests-cache
+retry-requests
+pandas
